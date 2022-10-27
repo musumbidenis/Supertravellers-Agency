@@ -2,20 +2,20 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Models\Destination;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class Users2 extends PowerGridComponent
+final class Destinations extends PowerGridComponent
 {
     use ActionButton;
 
-    public string $primaryKey = 'users.user_id';
+    public string $primaryKey = 'destinations.destination_id';
 
-    public string $sortField = 'users.user_id';
+    public string $sortField = 'destinations.destination_id';
 
     protected function getListeners()
     {
@@ -40,10 +40,10 @@ final class Users2 extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
+        $this->showCheckBox('destination_id');
 
         return [
-            Exportable::make('users_report')
+            Exportable::make('destinations_report')
                 ->striped('A6ACCD')
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()
@@ -64,13 +64,13 @@ final class Users2 extends PowerGridComponent
     */
 
     /**
-     * PowerGrid datasource.
-     *
-     * @return Builder<\App\Models\User>
-     */
+    * PowerGrid datasource.
+    *
+    * @return Builder<\App\Models\Destination>
+    */
     public function datasource(): Builder
     {
-        return User::query();
+        return Destination::query();
     }
 
     /*
@@ -105,42 +105,17 @@ final class Users2 extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('first_name')
-            ->addColumn('surname')
-            ->addColumn('email')
+            ->addColumn('destination_name')
 
-            /** Example of custom column using a closure **/
-            ->addColumn('email_lower', function (User $model) {
-                return strtolower(e($model->email));
+           /** Example of custom column using a closure **/
+            ->addColumn('destination_name_lower', function (Destination $model) {
+                return strtolower(e($model->destination_name));
             })
 
-            ->addColumn('role')
-            ->addColumn('created_at_formatted', fn(User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn(User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn (Destination $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            ->addColumn('updated_at_formatted', fn (Destination $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
     }
-    /*
-    |--------------------------------------------------------------------------
-    |  Table header
-    |--------------------------------------------------------------------------
-    | Configure Action Buttons for your table header.
-    |
 
-    */
-    /**
-     * PowerGrid Header
-     *
-     * @return array<int, Button>
-     */
-    public function header(): array
-    {
-        $ids = $this->checkboxValues;
-        return [
-            Button::add('bulk')
-                ->caption(__('Export to PDF'))
-                ->class('btn btn-default')
-                // ->route('users.pdf', ['id' => json_encode($this->checkboxValues)]),
-        ];
-    }
     /*
     |--------------------------------------------------------------------------
     |  Include Columns
@@ -150,7 +125,7 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
+     /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -158,24 +133,11 @@ final class Users2 extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('FIRST NAME', 'first_name')
-                ->sortable()
-                ->searchable()
-                ->editOnClick(),
 
-            Column::make('SURNAME', 'surname')
-                ->sortable()
-                ->searchable()
-                ->editOnClick(),
-
-            Column::make('EMAIL ADDRESS', 'email')
+            Column::make('DESTINATION NAME', 'destination_name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
-
-            Column::make('ROLE', 'role')
-                ->sortable()
-                ->searchable(),
 
             Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -186,24 +148,10 @@ final class Users2 extends PowerGridComponent
                 ->searchable()
                 ->sortable()
                 ->makeInputDatePicker(),
-        ];
+
+        ]
+;
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Update
-    |--------------------------------------------------------------------------
-    | Data update to the database.
-
-    */
-    public ?array $first_name = ['1'];
-    public function onUpdatedEditable(string $id, string $field, string $value):void
-    {
-        User::query()->find($id)->update([
-            $field => $value,
-        ]);
-    }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -213,8 +161,8 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
-     * PowerGrid User Action Buttons.
+     /**
+     * PowerGrid Destination Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -225,11 +173,11 @@ final class Users2 extends PowerGridComponent
        return [
            Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('user.edit', ['user' => 'id']),
+               ->route('destination.edit', ['destination' => 'id']),
 
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('user.destroy', ['user' => 'id'])
+               ->route('destination.destroy', ['destination' => 'id'])
                ->method('delete')
         ];
     }
@@ -243,8 +191,8 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
-     * PowerGrid User Action Rules.
+     /**
+     * PowerGrid Destination Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -256,13 +204,9 @@ final class Users2 extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($destination) => $destination->id === 1)
                 ->hide(),
         ];
     }
     */
-    public function template(): ?string
-    {
-        return null;
-    }
 }

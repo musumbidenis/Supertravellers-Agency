@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PackagesController;
+use App\Http\Controllers\DestinationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,5 @@ Route::get('/contact', function () {
 });
 
 Route::resource('users', UsersController::class);
+Route::resource('packages', PackagesController::class);
+Route::resource('destinations', DestinationsController::class);

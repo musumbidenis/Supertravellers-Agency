@@ -42,6 +42,36 @@
                         </li>
                     </ul>
                 </li>
+                <li
+                    class="slide {{ Request::path() == 'destinations/create' || Request::path() == 'destinations' ? 'is-expanded' : '' }}">
+                    <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">destinations</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">Destinations</a></li>
+                        <li><a href="/destinations" class="slide-item {{ Request::path() == 'destinations' ? 'active' : '' }}"> All
+                                Destinations</a>
+                        </li>
+                        <li><a href="/destinations/create"
+                                class="slide-item {{ Request::path() == 'destinations/create' ? 'active' : '' }}"> New Destination</a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="slide {{ Request::path() == 'packages/create' || Request::path() == 'packages' ? 'is-expanded' : '' }}">
+                    <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">Packages</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">packages</a></li>
+                        <li><a href="/packages" class="slide-item {{ Request::path() == 'packages' ? 'active' : '' }}"> All
+                                Packages</a>
+                        </li>
+                        <li><a href="/packages/create"
+                                class="slide-item {{ Request::path() == 'packages/create' ? 'active' : '' }}"> New Package</a>
+                        </li>
+                    </ul>
+                </li>
         </div>
     </div>
     <!--/APP-SIDEBAR-->

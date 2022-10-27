@@ -2,34 +2,16 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Models\Package;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class Users2 extends PowerGridComponent
+final class Packages extends PowerGridComponent
 {
     use ActionButton;
-
-    public string $primaryKey = 'users.user_id';
-
-    public string $sortField = 'users.user_id';
-
-    protected function getListeners()
-    {
-        return array_merge(parent::getListeners(), ['rowActionEvent', 'bulkActionEvent']);
-    }
-
-    public function bulkActionEvent()
-    {
-        if (count($this->checkboxValues) == 0) {
-            $this->dispatchBrowserEvent('showAlert', ['message' => 'You must select at least one item!']);
-
-            return;
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -43,12 +25,10 @@ final class Users2 extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('users_report')
-                ->striped('A6ACCD')
+            Exportable::make('export')
+                ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()
-                ->showSearchInput()
-                ->showToggleColumns(),
+            Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -64,13 +44,13 @@ final class Users2 extends PowerGridComponent
     */
 
     /**
-     * PowerGrid datasource.
-     *
-     * @return Builder<\App\Models\User>
-     */
+    * PowerGrid datasource.
+    *
+    * @return Builder<\App\Models\Package>
+    */
     public function datasource(): Builder
     {
-        return User::query();
+        return Package::query();
     }
 
     /*
@@ -105,42 +85,23 @@ final class Users2 extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('first_name')
-            ->addColumn('surname')
-            ->addColumn('email')
+            ->addColumn('package_id')
+            ->addColumn('package_id')
+            ->addColumn('package_type')
 
-            /** Example of custom column using a closure **/
-            ->addColumn('email_lower', function (User $model) {
-                return strtolower(e($model->email));
+           /** Example of custom column using a closure **/
+            ->addColumn('package_type_lower', function (Package $model) {
+                return strtolower(e($model->package_type));
             })
 
-            ->addColumn('role')
-            ->addColumn('created_at_formatted', fn(User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn(User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('description')
+            ->addColumn('amount')
+            ->addColumn('image_url')
+            ->addColumn('destination_id')
+            ->addColumn('created_at_formatted', fn (Package $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            ->addColumn('updated_at_formatted', fn (Package $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
     }
-    /*
-    |--------------------------------------------------------------------------
-    |  Table header
-    |--------------------------------------------------------------------------
-    | Configure Action Buttons for your table header.
-    |
 
-    */
-    /**
-     * PowerGrid Header
-     *
-     * @return array<int, Button>
-     */
-    public function header(): array
-    {
-        $ids = $this->checkboxValues;
-        return [
-            Button::add('bulk')
-                ->caption(__('Export to PDF'))
-                ->class('btn btn-default')
-                // ->route('users.pdf', ['id' => json_encode($this->checkboxValues)]),
-        ];
-    }
     /*
     |--------------------------------------------------------------------------
     |  Include Columns
@@ -150,7 +111,7 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
+     /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -158,24 +119,32 @@ final class Users2 extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('FIRST NAME', 'first_name')
-                ->sortable()
-                ->searchable()
-                ->editOnClick(),
+            Column::make('PACKAGE ID', 'package_id')
+                ->makeInputRange(),
 
-            Column::make('SURNAME', 'surname')
-                ->sortable()
-                ->searchable()
-                ->editOnClick(),
+            Column::make('PACKAGE ID', 'package_id')
+                ->makeInputRange(),
 
-            Column::make('EMAIL ADDRESS', 'email')
+            Column::make('PACKAGE TYPE', 'package_type')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('ROLE', 'role')
+            Column::make('DESCRIPTION', 'description')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make('AMOUNT', 'amount')
+                ->makeInputRange(),
+
+            Column::make('IMAGE URL', 'image_url')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make('DESTINATION ID', 'destination_id')
+                ->makeInputRange(),
 
             Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -186,24 +155,10 @@ final class Users2 extends PowerGridComponent
                 ->searchable()
                 ->sortable()
                 ->makeInputDatePicker(),
-        ];
+
+        ]
+;
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Update
-    |--------------------------------------------------------------------------
-    | Data update to the database.
-
-    */
-    public ?array $first_name = ['1'];
-    public function onUpdatedEditable(string $id, string $field, string $value):void
-    {
-        User::query()->find($id)->update([
-            $field => $value,
-        ]);
-    }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -213,8 +168,8 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
-     * PowerGrid User Action Buttons.
+     /**
+     * PowerGrid Package Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -225,11 +180,11 @@ final class Users2 extends PowerGridComponent
        return [
            Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('user.edit', ['user' => 'id']),
+               ->route('package.edit', ['package' => 'id']),
 
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('user.destroy', ['user' => 'id'])
+               ->route('package.destroy', ['package' => 'id'])
                ->method('delete')
         ];
     }
@@ -243,8 +198,8 @@ final class Users2 extends PowerGridComponent
     |
     */
 
-    /**
-     * PowerGrid User Action Rules.
+     /**
+     * PowerGrid Package Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -256,13 +211,9 @@ final class Users2 extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($package) => $package->id === 1)
                 ->hide(),
         ];
     }
     */
-    public function template(): ?string
-    {
-        return null;
-    }
 }
