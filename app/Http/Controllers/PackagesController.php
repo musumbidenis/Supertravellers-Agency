@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PackagesController extends Controller
 {
@@ -23,7 +26,8 @@ class PackagesController extends Controller
      */
     public function create()
     {
-        return view('admin.newPackage');
+        $destinations = DB::select('select * from destinations');
+        return view('admin.newPackage', ['destinations' => $destinations]);
     }
 
     /**
@@ -34,7 +38,39 @@ class PackagesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validate the form input fields
+        $validator = Validator::make($request->all(), [
+            'package_name' => 'required',
+            'package_type' => 'required',
+            'destination' => 'required',
+            'amount' => 'required|numeric',
+            'description' => 'required',
+            'image_url' => 'required',
+        ]);
+
+        //Alert the user of the input error
+        if ($validator->fails()) {
+            return back()
+                ->with('toast_error', $validator->messages()->all()[0])
+                ->withInput();
+        } else {
+            $image_name = $request->file('image_url')->getClientOriginalName();
+
+            $path = $request->file('image_url')->store('public/images');
+
+            //Save the input data to database
+            $package = new Package();
+            $package->package_name = $request->package_name;
+            $package->package_type = $request->package_type;
+            $package->destination_id = $request->destination;
+            $package->amount = $request->amount;
+            $package->description = $request->description;
+            $package->image_url = $image_name;
+
+            $package->save();
+
+            return back()->withSuccess('New Package Created Successfully!');
+        }
     }
 
     /**

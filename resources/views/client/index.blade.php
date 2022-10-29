@@ -14,8 +14,11 @@
                                     <div class="row mb-2">
                                         <div class="col-sm-12 col-md-12 mb-3 mb-lg-0 col-lg-12">
                                             <select name="" id="" class="form-control custom-select">
-                                                <option value="">Destination</option>
-                                                <option value="">Peru</option>
+                                                <option disabled selected value="">Destination</option>
+                                                @foreach ($destinations as $destination)
+                                                    <option value={{ $destination->destination_id }}>
+                                                        {{ $destination->destination_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -109,98 +112,115 @@
             </div>
         </div>
     </div>
+    <div class="untree_co-section testimonial-section mt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 text-center">
+                    <h2 class="section-title text-center mb-5">Testimonials</h2>
+
+                    <div class="owl-single owl-carousel no-nav">
+                        <div class="testimonial mx-auto">
+                            <figure class="img-wrap">
+                                <img src="images/person_2.jpg" alt="Image" class="img-fluid">
+                            </figure>
+                            <h3 class="name">Adam Aderson</h3>
+                            <blockquote>
+                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
+                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                            </blockquote>
+                        </div>
+
+                        <div class="testimonial mx-auto">
+                            <figure class="img-wrap">
+                                <img src="images/person_3.jpg" alt="Image" class="img-fluid">
+                            </figure>
+                            <h3 class="name">Lukas Devlin</h3>
+                            <blockquote>
+                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
+                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                            </blockquote>
+                        </div>
+
+                        <div class="testimonial mx-auto">
+                            <figure class="img-wrap">
+                                <img src="images/person_4.jpg" alt="Image" class="img-fluid">
+                            </figure>
+                            <h3 class="name">Kayla Bryant</h3>
+                            <blockquote>
+                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
+                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                            </blockquote>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="untree_co-section">
         <div class="container">
             <div class="row justify-content-center text-center mb-5">
                 <div class="col-lg-6">
                     <h2 class="section-title text-center mb-3">Popular Packages</h2>
-                    <p>Let us take you to your dream destinations. Checkout some of the most popular packages we offers. We bet you'll love it!</p>
+                    <p>Let us take you to your dream destinations. Checkout some of the most popular packages we offers. We
+                        bet you'll love it!</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                    <div class="media-1">
-                        <a href="#" class="d-block mb-3"><img src="../client/images/hero-slider-1.jpg"
-                                alt="Image" class="img-fluid"></a>
-                        <span class="d-flex align-items-center loc mb-2">
-                            <span class="icon-room mr-3"></span>
-                            <span>Italy</span>
-                        </span>
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h3><a href="#">Rialto Mountains</a></h3>
-                                <div class="price ml-auto">
-                                    <span>$520.00</span>
+                @foreach ($packages as $package)
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                        <div class="media-1">
+                            <a href="#" class="d-block mb-3"><img src="storage/images/{{ $package->image_url }}"
+                                    alt="Image" class="img-fluid"></a>
+                            <span class="d-flex align-items-center loc mb-2">
+                                <span class="icon-room mr-3"></span>
+                                <span>{{ $package->destination_name }}</span>
+                            </span>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <h3><a href="#">{{ $package->package_name }}</a></h3>
+                                    <div class="price ml-auto">
+                                        <span>Kshs. {{ $package->amount }}</span>
+                                    </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
 
                     </div>
-                </div>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                    <div class="media-1">
-                        <a href="#" class="d-block mb-3"><img src="../client/images/hero-slider-2.jpg"
-                                alt="Image" class="img-fluid"></a>
-                        <span class="d-flex align-items-center loc mb-2">
-                            <span class="icon-room mr-3"></span>
-                            <span>United States</span>
-                        </span>
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h3><a href="#">San Francisco</a></h3>
-                                <div class="price ml-auto">
-                                    <span>$520.00</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                    <div class="media-1">
-                        <a href="#" class="d-block mb-3"><img src="../client/images/hero-slider-3.jpg"
-                                alt="Image" class="img-fluid"></a>
-                        <span class="d-flex align-items-center loc mb-2">
-                            <span class="icon-room mr-3"></span>
-                            <span>Malaysia</span>
-                        </span>
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h3><a href="#">Perhentian Islands</a></h3>
-                                <div class="price ml-auto">
-                                    <span>$750.00</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                    <div class="media-1">
-                        <a href="#" class="d-block mb-3"><img src="../client/images/hero-slider-4.jpg"
-                                alt="Image" class="img-fluid"></a>
-
-                        <span class="d-flex align-items-center loc mb-2">
-                            <span class="icon-room mr-3"></span>
-                            <span>Switzerland</span>
-                        </span>
-
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <h3><a href="#">Lake Thun</a></h3>
-                                <div class="price ml-auto">
-                                    <span>$520.00</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script src="../client/js/typed.js"></script>
+    <script>
+        $(function() {
+            var slides = $('.slides'),
+                images = slides.find('img');
+
+            images.each(function(i) {
+                $(this).attr('data-id', i + 1);
+            })
+
+            var typed = new Typed('.typed-words', {
+                strings: ["Maasai Mara.", " Diani.", " Mombasa.", " Amboseli.", " Nairobi."],
+                typeSpeed: 80,
+                backSpeed: 80,
+                backDelay: 4000,
+                startDelay: 1000,
+                loop: true,
+                showCursor: true,
+                preStringTyped: (arrayPos, self) => {
+                    arrayPos++;
+                    console.log(arrayPos);
+                    $('.slides img').removeClass('active');
+                    $('.slides img[data-id="' + arrayPos + '"]').addClass('active');
+                }
+
+            });
+        })
+    </script>
 @endsection

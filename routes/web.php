@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\DestinationsController;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,13 @@ use App\Http\Controllers\DestinationsController;
 |
  */
 
-Route::get('/', function () {
-    return view('client.index');
+/**Client Section Routes */
+Route::get('/', [ClientController::class,'index']);
+
+Route::get('/about', function () {
+    return view('client.about');
 });
+
 Route::get('/contact', function () {
     return view('client.contact');
 });
