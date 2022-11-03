@@ -10,10 +10,12 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <form class="form">
+                                <form class="form" action="/getDestination" method="post">
+                                    {{ csrf_field() }}
+
                                     <div class="row mb-2">
                                         <div class="col-sm-12 col-md-12 mb-3 mb-lg-0 col-lg-12">
-                                            <select name="" id="" class="form-control custom-select">
+                                            <select name="destination" id="destination" class="form-control custom-select">
                                                 <option disabled selected value="">Destination</option>
                                                 @foreach ($destinations as $destination)
                                                     <option value={{ $destination->destination_id }}>
@@ -179,7 +181,8 @@
                             </span>
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <h3><a href="#">{{ $package->package_name }}</a></h3>
+                                    <h3><a href="/getPackage/{{ $package->package_id }}">{{ $package->package_name }}</a>
+                                    </h3>
                                     <div class="price ml-auto">
                                         <span>Kshs. {{ $package->amount }}</span>
                                     </div>

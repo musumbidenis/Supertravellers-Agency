@@ -18,13 +18,15 @@
                 <li class="has-children">
                     <a href="#">Packages</a>
                     <ul class="dropdown">
-                        <li><a href="#">Family Holiday</a></li>
-                        <li><a href="#">Beach Holiday</a></li>
-                        <li><a href="#">Safari Tour</a></li>
-                        <li><a href="#">Honeymoon</a></li>
+                        <li><a href="/getPackageType/{{'Family Holiday'}}">Family Holiday</a></li>
+                        <li><a href="/getPackageType/{{'Beach Holiday'}}">Beach Holiday</a></li>
+                        <li><a href="/getPackageType/{{'Safari Tour'}}">Safari Tour</a></li>
+                        <li><a href="/getPackageType/{{'Honeymoon'}}">Honeymoon</a></li>
                     </ul>
                 </li>
                 <li><a href="/contact">Contact Us</a></li>
+                <li><a href="/bookings">My Bookings</a></li>
+                <li><a href="/login">Sign In</a></li>
             </ul>
 
             <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d142462ea4b7c68f8bc32281bc0695ee",
+    "content-hash": "88da8dee6f2eed45d33d9a0453c524ff",
     "packages": [
         {
             "name": "brick/math",
@@ -61,6 +61,63 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
+        },
+        {
+            "name": "bryceandy/laravel_pesapal",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bryceandy/laravel_pesapal.git",
+                "reference": "0fb05e7693b6c724dac854ba2451d76eb4991737"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bryceandy/laravel_pesapal/zipball/0fb05e7693b6c724dac854ba2451d76eb4991737",
+                "reference": "0fb05e7693b6c724dac854ba2451d76eb4991737",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Bryceandy\\Laravel_Pesapal\\PesapalServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bryceandy\\Laravel_Pesapal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bryceandy",
+                    "email": "hello@bryceandy.com"
+                }
+            ],
+            "description": "An unofficial Pesapal API integration for Laravel. Multiple payment options including but not limited to M-Pesa, Tigo Pesa, Visa, Mastercard, American Express in Kenya, Tanzania & Uganda.",
+            "support": {
+                "issues": "https://github.com/bryceandy/laravel_pesapal/issues",
+                "source": "https://github.com/bryceandy/laravel_pesapal/tree/v2.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.patreon.com/bryceandy",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-10-28T14:22:02+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -2006,6 +2063,49 @@
             "time": "2022-04-17T13:12:02+00:00"
         },
         {
+            "name": "levizwannah/mpesa-sdk-php",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/levizwannah/mpesa-sdk-php.git",
+                "reference": "fdd6874894432850e2a79d969241a6888edaf418"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/levizwannah/mpesa-sdk-php/zipball/fdd6874894432850e2a79d969241a6888edaf418",
+                "reference": "fdd6874894432850e2a79d969241a6888edaf418",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LeviZwannah\\MpesaSdk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Levi Kamara Zwannah",
+                    "email": "levizwannah@gmail.com"
+                }
+            ],
+            "description": "An independent Mpesa SDK for PHP. This package provides a clean implementation of the Safaricom Mpesa API for PHP applications.",
+            "keywords": [
+                "Independent Mpesa Package",
+                "Mpesa PHP",
+                "Mpesa Package",
+                "Safaricom M-Pesa"
+            ],
+            "support": {
+                "issues": "https://github.com/levizwannah/mpesa-sdk-php/issues",
+                "source": "https://github.com/levizwannah/mpesa-sdk-php/tree/v1.0.2"
+            },
+            "time": "2022-10-16T15:40:55+00:00"
+        },
+        {
             "name": "livewire/livewire",
             "version": "v2.10.7",
             "source": {
@@ -3607,6 +3707,77 @@
                 }
             ],
             "time": "2022-05-28T13:28:03+00:00"
+        },
+        {
+            "name": "smodav/mpesa",
+            "version": "v6.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SmoDav/mpesa.git",
+                "reference": "873c6d74da4b3b2513e1e9c7396d72ac4ced718b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SmoDav/mpesa/zipball/873c6d74da4b3b2513e1e9c7396d72ac4ced718b",
+                "reference": "873c6d74da4b3b2513e1e9c7396d72ac4ced718b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.2|^7.0.1",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "nesbot/carbon": "^1.0 || ^2.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master|^1.3.1",
+                "phpunit/phpunit": "~5.7|~6.2|~8.5|^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SmoDav\\Mpesa\\Laravel\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "STK": "SmoDav\\Mpesa\\Laravel\\Facades\\STK",
+                        "Simulate": "SmoDav\\Mpesa\\Laravel\\Facades\\Simulate",
+                        "Registrar": "SmoDav\\Mpesa\\Laravel\\Facades\\Registrar",
+                        "Identity": "SmoDav\\Mpesa\\Laravel\\Facades\\Identity"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Mpesa/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "SmoDav\\Mpesa\\": "src/Mpesa/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "SmoDav",
+                    "email": "smodavprivate@gmail.com"
+                }
+            ],
+            "description": "M-Pesa API implementation",
+            "keywords": [
+                "api",
+                "laravel",
+                "mpesa",
+                "safaricom",
+                "transactions"
+            ],
+            "support": {
+                "issues": "https://github.com/SmoDav/mpesa/issues",
+                "source": "https://github.com/SmoDav/mpesa/tree/v6.1.0"
+            },
+            "time": "2022-04-26T03:42:23+00:00"
         },
         {
             "name": "symfony/console",
