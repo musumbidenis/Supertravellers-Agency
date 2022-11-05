@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "bryceandy/laravel_pesapal": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/helpers": "^1.5",
         "laravel/sanctum": "^3.0",

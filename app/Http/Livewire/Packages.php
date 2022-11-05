@@ -13,6 +13,10 @@ final class Packages extends PowerGridComponent
 {
     use ActionButton;
 
+    public string $primaryKey = 'packages.package_id';
+
+    public string $sortField = 'packages.package_id';
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup

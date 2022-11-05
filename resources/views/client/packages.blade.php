@@ -26,12 +26,11 @@
             @foreach ($packages as $item)
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <div class="media-1">
-                        <a href="#" class="d-block mb-3"><img src="../storage/images/{{ $item->image_url }}"
-                                alt="Image" class="img-fluid"></a>
-                        <span class="d-flex align-items-center loc mb-2">
-                            <span class="icon-room mr-3"></span>
-                            <span>{{ $item->destination_name }}</span>
-                        </span>
+                        <img style="height: 270px;width:500px;" src="../images/{{ $item->image_url }}" alt="Image" class="img-fluid">
+                            <span class="d-flex align-items-center loc my-2">
+                                <span class="icon-room mr-3"></span>
+                                <span>{{ $item->destination_name }}</span>
+                            </span>
                         <div class="d-flex align-items-center">
                             <div>
                                 <h3><a href="/getPackage/{{ $item->package_id }}">{{ $item->package_name }}</a></h3>

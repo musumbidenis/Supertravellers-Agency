@@ -54,9 +54,12 @@ class PackagesController extends Controller
                 ->with('toast_error', $validator->messages()->all()[0])
                 ->withInput();
         } else {
-            $image_name = $request->file('image_url')->getClientOriginalName();
+            $image =  $request->file('image_url');
+            $image_name = $image->getClientOriginalName();
 
-            $path = $request->file('image_url')->store('public/images');
+            $destination = 'images';
+
+            $image->move(public_path($destination), $image_name);
 
             //Save the input data to database
             $package = new Package();

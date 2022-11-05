@@ -173,9 +173,8 @@
                 @foreach ($packages as $package)
                     <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <div class="media-1">
-                            <a href="#" class="d-block mb-3"><img src="storage/images/{{ $package->image_url }}"
-                                    alt="Image" class="img-fluid"></a>
-                            <span class="d-flex align-items-center loc mb-2">
+                            <img style="height: 270px;width:500px;" src="../images/{{ $package->image_url }}" alt="Image" class="img-fluid">
+                            <span class="d-flex align-items-center loc my-2">
                                 <span class="icon-room mr-3"></span>
                                 <span>{{ $package->destination_name }}</span>
                             </span>
