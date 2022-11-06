@@ -65,8 +65,7 @@
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 text-center">
-                            Copyright © <span id="year"></span> <a href="https://www.cit.ac.ke/">Coast Institute of
-                                Technology</a>.
+                            Copyright © <span id="year"></span> <a href="#">Supertravellers Agency</a>.
                             All rights reserved.
                         </div>
                     </div>
