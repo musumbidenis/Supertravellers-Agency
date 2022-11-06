@@ -120,6 +120,7 @@
     <script src="../client/js/daterangepicker.js"></script>
 
     <script src="../client/js/custom.js"></script>
+    @include('sweetalert::alert')
     @yield('js')
 
 </body>

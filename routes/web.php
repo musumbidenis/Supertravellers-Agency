@@ -44,6 +44,7 @@ Route::get('/login', function () {
 });
 Route::post('/register', [AuthController::class,'register']);
 Route::post('/login', [AuthController::class,'login']);
+Route::get('/logout', [AuthController::class,'logout']);
 
 
 /** Admin Section Routes */

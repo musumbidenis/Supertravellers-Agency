@@ -55,9 +55,9 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form class="needs-validation" action="/users" method="post" novalidate>
-                                        <input type="hidden" name="_token"
-                                            value="zNuV3mnvLPVoOTuRl8KAK4e9tTMDAUlg6lDGrAkh">
+                                    <form class="needs-validation" action="/register" method="post" novalidate>
+                                        {{ csrf_field() }}
+
                                         <span class="login100-form-title">
                                             Register
                                         </span>
@@ -70,7 +70,7 @@
                                                     </span>
                                                     <input type="text"
                                                         class="input100 border-start-0 ms-0 form-control"
-                                                        name="first_name" value="" required
+                                                        name="first_name" value="{{ old('first_name') }}" required
                                                         placeholder="First Name">
                                                     <div class="invalid-feedback">Please provide a valid name.
                                                     </div>
@@ -83,7 +83,7 @@
                                                     </span>
                                                     <input type="text"
                                                         class="input100 border-start-0 ms-0 form-control" name="surname"
-                                                        value="" required placeholder="Surname">
+                                                        value="{{ old('surname') }}" required placeholder="Surname">
                                                     <div class="invalid-feedback">Please provide a valid name.
                                                     </div>
                                                 </div>
@@ -97,7 +97,7 @@
                                                     </span>
                                                     <input type="email"
                                                         class="input100 border-start-0 ms-0 form-control" name="email"
-                                                        value="" required placeholder="Email Address">
+                                                        value="{{ old('email') }}" required placeholder="Email Address">
                                                     <div class="invalid-feedback">Please provide a valid email address.
                                                     </div>
                                                 </div>
@@ -109,7 +109,7 @@
                                                     </span>
                                                     <input type="tel"
                                                         class="input100 border-start-0 ms-0 form-control"
-                                                        name="first_name" value="" required
+                                                        name="phone" value="{{ old('phone') }}" required
                                                         placeholder="Phone, e.g 0712345678" pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$">
                                                     <div class="invalid-feedback">Please provide a phone number in the requested format.
                                                     </div>
@@ -136,7 +136,7 @@
                                                         <i class="zmdi zmdi-eye" aria-hidden="true"></i>
                                                     </a>
                                                     <input type="text"
-                                                        class="input100 border-start-0 ms-0 form-control" name="cpassword"
+                                                        class="input100 border-start-0 ms-0 form-control" name="password_confirmation"
                                                         value="" required placeholder="Confirm Password">
                                                     <div class="invalid-feedback">Please provide a password.
                                                     </div>
@@ -203,6 +203,7 @@
     <!-- CUSTOM JS -->
     <script src="../admin/js/custom.js"></script>
     <script src="../admin/js/form-validation.js"></script>
+    @include('sweetalert::alert')
 
 </body>
 

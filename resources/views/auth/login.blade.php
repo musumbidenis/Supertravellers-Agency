@@ -55,9 +55,9 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form class="needs-validation" action="/users" method="post" novalidate>
-                                        <input type="hidden" name="_token"
-                                            value="zNuV3mnvLPVoOTuRl8KAK4e9tTMDAUlg6lDGrAkh">
+                                    <form class="needs-validation" action="/login" method="post" novalidate>
+                                        {{ csrf_field() }}
+
                                         <span class="login100-form-title">
                                             Login
                                         </span>
@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="container-login100-form-btn">
                                             <button class="login100-form-btn btn-primary" type="submit">
-                                                Register
+                                                Login
                                             </button>
                                         </div>
                                         <div class="text-center pt-3">
@@ -140,6 +140,7 @@
     <!-- CUSTOM JS -->
     <script src="../admin/js/custom.js"></script>
     <script src="../admin/js/form-validation.js"></script>
+    @include('sweetalert::alert')
 
 </body>
 
