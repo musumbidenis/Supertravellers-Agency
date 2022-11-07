@@ -118,6 +118,8 @@ class PackagesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Package::where('package_id', $id)->delete();
+
+        return response()->json('success');
     }
 }

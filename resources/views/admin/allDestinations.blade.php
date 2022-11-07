@@ -27,3 +27,51 @@
         </div>
     </div>
 @endsection
+@section('js')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        window.addEventListener('showAlert', event => {
+
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this record!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var data = event.detail.message;
+
+                        //CORS
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        //Ajax request for deleting
+                        $.ajax({
+                            url: 'destinations/' + data,
+                            type: 'delete',
+                            data: {
+                                id: data,
+                            },
+                            success: function(response) {
+                                swal({
+                                    title: "Success",
+                                    text: "Data was deleted successfully!",
+                                    icon: "success",
+                                }).then((confirmed) => {
+                                    window.location.reload();
+                                });
+
+                            }
+                        });
+                    } else {
+                        swal("Your record is safe!");
+                    }
+                });
+        })
+    </script>
+@endsection

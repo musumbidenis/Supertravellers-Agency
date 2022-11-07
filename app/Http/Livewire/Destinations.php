@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Auth;
 use App\Models\Destination;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +22,19 @@ final class Destinations extends PowerGridComponent
     {
         return array_merge(parent::getListeners(), ['rowActionEvent', 'bulkActionEvent']);
     }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Events
+    |--------------------------------------------------------------------------
+    */
 
+    public function rowActionEvent(array $data): void
+    {
+        $message = $data['id'];
+
+        $this->dispatchBrowserEvent('showAlert', ['message' => $message]);
+    }
     public function bulkActionEvent()
     {
         if (count($this->checkboxValues) == 0) {
@@ -64,10 +77,10 @@ final class Destinations extends PowerGridComponent
     */
 
     /**
-    * PowerGrid datasource.
-    *
-    * @return Builder<\App\Models\Destination>
-    */
+     * PowerGrid datasource.
+     *
+     * @return Builder<\App\Models\Destination>
+     */
     public function datasource(): Builder
     {
         return Destination::query();
@@ -107,13 +120,13 @@ final class Destinations extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('destination_name')
 
-           /** Example of custom column using a closure **/
+            /** Example of custom column using a closure **/
             ->addColumn('destination_name_lower', function (Destination $model) {
                 return strtolower(e($model->destination_name));
             })
 
-            ->addColumn('created_at_formatted', fn (Destination $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn (Destination $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn(Destination $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            ->addColumn('updated_at_formatted', fn(Destination $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -125,7 +138,7 @@ final class Destinations extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -133,7 +146,6 @@ final class Destinations extends PowerGridComponent
     public function columns(): array
     {
         return [
-
             Column::make('DESTINATION NAME', 'destination_name')
                 ->sortable()
                 ->searchable()
@@ -148,9 +160,7 @@ final class Destinations extends PowerGridComponent
                 ->searchable()
                 ->sortable()
                 ->makeInputDatePicker(),
-
-        ]
-;
+        ];
     }
 
     /*
@@ -161,27 +171,26 @@ final class Destinations extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Destination Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    /*
+    /**
+     * PowerGrid Package Action Buttons.
+     *
+     * @return array<int, Button>
+     */
+
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('destination.edit', ['destination' => 'id']),
-
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('destination.destroy', ['destination' => 'id'])
-               ->method('delete')
+        return [
+            Button::make('destroy', 'Delete')
+                ->class('btn btn-sm btn-danger')
+                ->emit('rowActionEvent', ['id' => 'destination_id']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------
@@ -191,22 +200,19 @@ final class Destinations extends PowerGridComponent
     |
     */
 
-     /**
-     * PowerGrid Destination Action Rules.
+    /**
+     * PowerGrid Package Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    /*
     public function actionRules(): array
     {
-       return [
-
-           //Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($destination) => $destination->id === 1)
-                ->hide(),
+        return [
+            //Disable button delete for customer,receptionist
+            Rule::button('destroy')
+                ->when(fn($role) => Auth::user()->role === 'customere' || Auth::user()->role === 'receptionist')
+                ->disable(),
         ];
     }
-    */
 }

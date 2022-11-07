@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Auth;
 use App\Models\Package;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +18,30 @@ final class Packages extends PowerGridComponent
 
     public string $sortField = 'packages.package_id';
 
+    /**
+     * User name
+     *
+     * @var array<int, string> $name
+     */
+    public array $name;
+
+    protected function getListeners()
+    {
+        return array_merge(parent::getListeners(), ['rowActionEvent', 'bulkActionEvent']);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Events
+    |--------------------------------------------------------------------------
+    */
+    public function rowActionEvent(array $data): void
+    {
+        $message = $data['id'];
+
+        $this->dispatchBrowserEvent('showAlert', ['message' => $message]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -29,10 +54,12 @@ final class Packages extends PowerGridComponent
         $this->showCheckBox();
 
         return [
-            Exportable::make('export')
-                ->striped()
+            Exportable::make('packages_report')
+                ->striped('A6ACCD')
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -48,13 +75,15 @@ final class Packages extends PowerGridComponent
     */
 
     /**
-    * PowerGrid datasource.
-    *
-    * @return Builder<\App\Models\Package>
-    */
+     * PowerGrid datasource.
+     *
+     * @return Builder<\App\Models\Package>
+     */
     public function datasource(): Builder
     {
-        return Package::query();
+        return Package::query()
+            ->join('destinations', 'destinations.destination_id', '=', 'packages.destination_id')
+            ->select('packages.*', 'destinations.destination_name');
     }
 
     /*
@@ -89,21 +118,17 @@ final class Packages extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('package_id')
-            ->addColumn('package_id')
+            ->addColumn('package_name')
             ->addColumn('package_type')
 
-           /** Example of custom column using a closure **/
+            /** Example of custom column using a closure **/
             ->addColumn('package_type_lower', function (Package $model) {
                 return strtolower(e($model->package_type));
             })
 
-            ->addColumn('description')
             ->addColumn('amount')
             ->addColumn('image_url')
-            ->addColumn('destination_id')
-            ->addColumn('created_at_formatted', fn (Package $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            ->addColumn('updated_at_formatted', fn (Package $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('destination_name');
     }
 
     /*
@@ -115,7 +140,7 @@ final class Packages extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -123,45 +148,33 @@ final class Packages extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('PACKAGE ID', 'package_id')
-                ->makeInputRange(),
-
-            Column::make('PACKAGE ID', 'package_id')
-                ->makeInputRange(),
+            Column::make('PACKAGE NAME', 'package_name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
 
             Column::make('PACKAGE TYPE', 'package_type')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('DESCRIPTION', 'description')
+            Column::make('AMOUNT', 'amount')->makeInputRange(),
+
+            Column::make('DESTINATION', 'destination_name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
+        ];
+    }
 
-            Column::make('AMOUNT', 'amount')
-                ->makeInputRange(),
+    public ?array $any = null;
 
-            Column::make('IMAGE URL', 'image_url')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
+    public function onUpdatedEditable(string $id, string $field, string $value):void
+    {
+        Package::query()->find($id)->update([
+            $field => $value,
+        ]);
 
-            Column::make('DESTINATION ID', 'destination_id')
-                ->makeInputRange(),
-
-            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
-
-            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
-                ->searchable()
-                ->sortable()
-                ->makeInputDatePicker(),
-
-        ]
-;
     }
 
     /*
@@ -172,27 +185,21 @@ final class Packages extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Package Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('package.edit', ['package' => 'id']),
+        return [
 
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('package.destroy', ['package' => 'id'])
-               ->method('delete')
+            Button::make('destroy', 'Delete')
+                ->class('btn btn-sm btn-danger')
+                ->emit('rowActionEvent', ['id' => 'package_id']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------
@@ -202,22 +209,19 @@ final class Packages extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Package Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    /*
     public function actionRules(): array
     {
-       return [
-
-           //Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($package) => $package->id === 1)
-                ->hide(),
+        return [
+            //Disable button delete for customer,receptionist
+            Rule::button('destroy')
+                ->when(fn($role) => Auth::user()->role === 'customere' || Auth::user()->role === 'receptionist')
+                ->disable(),
         ];
     }
-    */
 }

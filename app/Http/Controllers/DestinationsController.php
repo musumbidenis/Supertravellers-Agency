@@ -100,6 +100,8 @@ class DestinationsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Destination::where('destination_id', $id)->delete();
+
+        return response()->json('success');
     }
 }
