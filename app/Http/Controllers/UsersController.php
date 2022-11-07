@@ -57,7 +57,9 @@ class UsersController extends Controller
             'first_name' => 'required',
             'surname' => 'required',
             'email' => 'required|email|unique:users',
-            'role' => 'required|in:admin,accountant,receptionist',
+            'phone' => 'required',
+            'password' => 'required',
+            'role' => 'required|in:admin,receptionist',
         ]);
 
         //Alert the user of the input error
@@ -66,19 +68,19 @@ class UsersController extends Controller
                 ->with('toast_error', $validator->messages()->all()[0])
                 ->withInput($request->except('password'));
         } else {
-            $password = str_random(8);
 
             //Save the input data to database
             $user = new User();
             $user->first_name = $request->first_name;
             $user->surname = $request->surname;
             $user->email = $request->email;
-            $user->password = Hash::make($password);
+            $user->email = $request->phone;
+            $user->password = $request->password;
             $user->role = $request->role;
 
             $user->save();
 
-            return back()->withSuccess('New User Created Successfully!'.$password);
+            return back()->withSuccess('New User Created Successfully!');
         }
     }
 
@@ -124,6 +126,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('user_id', $id)->delete();
+
+        return response()->json('success');
     }
 }

@@ -21,26 +21,46 @@
                     <h3 class="card-title">Add User</h3>
                 </div>
                 <div class="card-body">
-                    <form class="needs-validation"  action="/users" method="post" novalidate>
+                    <form class="needs-validation" action="/users" method="post" novalidate>
                         {{ csrf_field() }}
-                        
+
                         <div class="form-row">
                             <div class="col-xl-6 mb-3">
                                 <label>First Name</label>
-                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required>
+                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}"
+                                    required>
                                 <div class="invalid-feedback">Please provide a name.</div>
                             </div>
                             <div class="col-xl-6 mb-3">
                                 <label>Surname</label>
-                                <input type="text" class="form-control" name="surname" value="{{ old('surname') }}" required>
+                                <input type="text" class="form-control" name="surname" value="{{ old('surname') }}"
+                                    required>
                                 <div class="invalid-feedback">Please provide a name.</div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-xl-6 mb-3">
                                 <label>Email Address</label>
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}"
+                                    required>
                                 <div class="invalid-feedback">Please provide a valid email address.</div>
+                            </div>
+                            <div class="col-xl-6 mb-3">
+                                <label>Phone Number</label>
+                                </span>
+                                <input type="tel" class="form-control" name="phone" value="{{ old('phone') }}"
+                                    required placeholder="Phone, e.g 0712345678"
+                                    pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$">
+                                <div class="invalid-feedback">Please provide a phone number in the requested format.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-xl-6 mb-3">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password" value="{{ old('password') }}"
+                                    required>
+                                <div class="invalid-feedback">Please provide a password.</div>
                             </div>
                             <div class="col-xl-6 mb-3">
                                 <label>Role</label>

@@ -51,7 +51,7 @@ final class Packages extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
+        $this->showCheckBox('package_id');
 
         return [
             Exportable::make('packages_report')

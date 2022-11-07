@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Auth;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,6 +21,18 @@ final class Users extends PowerGridComponent
     protected function getListeners()
     {
         return array_merge(parent::getListeners(), ['rowActionEvent', 'bulkActionEvent']);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Events
+    |--------------------------------------------------------------------------
+    */
+    public function rowActionEvent(array $data): void
+    {
+        $message = $data['id'];
+
+        $this->dispatchBrowserEvent('showAlert', ['message' => $message]);
     }
 
     public function bulkActionEvent()
@@ -176,21 +189,14 @@ final class Users extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('user.edit', ['user' => 'id']),
-
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('user.destroy', ['user' => 'id'])
-               ->method('delete')
+        return [
+            Button::make('destroy', 'Delete')
+                ->class('btn btn-sm btn-danger')
+                ->emit('rowActionEvent', ['id' => 'destination_id']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------
@@ -201,21 +207,18 @@ final class Users extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Rules.
+     * PowerGrid Package Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-    /*
     public function actionRules(): array
     {
-       return [
-
-           //Hide button edit for ID 1
-            Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
-                ->hide(),
+        return [
+            //Disable button delete for customer,receptionist
+            Rule::button('destroy')
+                ->when(fn($role) => Auth::user()->role === 'customere' || Auth::user()->role === 'receptionist')
+                ->disable(),
         ];
     }
-    */
 }
