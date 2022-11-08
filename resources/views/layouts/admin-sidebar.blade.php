@@ -21,15 +21,17 @@
                     <h3>Main</h3>
                 </li>
                 <li class="slide">
-                    <a class="side-menu__item has-link {{ Request::path() == 'dashboard' ? 'active' : '' }}" data-bs-toggle="slide" href="index.html"><i
-                            class="side-menu__icon fe fe-home"></i><span class="side-menu__label">Dashboard</span></a>
+                    <a class="side-menu__item has-link {{ Request::path() == 'dashboard' ? 'active' : '' }}"
+                        data-bs-toggle="slide" href="/dashboard"><i class="side-menu__icon fe fe-home"></i><span
+                            class="side-menu__label">Dashboard</span></a>
                 </li>
                 <li class="sub-category">
                     <h3>Pages</h3>
                 </li>
                 <li
                     class="slide {{ Request::path() == 'users/create' || Request::path() == 'users' ? 'is-expanded' : '' }}">
-                    <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                    <a class="side-menu__item {{ Request::path() == 'users/create' || Request::path() == 'users' ? 'active' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0)">
                         <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">Users</span>
                         <i class="angle fe fe-chevron-right"></i></a>
                     <ul class="slide-menu">
@@ -44,31 +46,50 @@
                 </li>
                 <li
                     class="slide {{ Request::path() == 'destinations/create' || Request::path() == 'destinations' ? 'is-expanded' : '' }}">
-                    <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                    <a class="side-menu__item {{ Request::path() == 'destinations/create' || Request::path() == 'destinations' ? 'active' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0)">
                         <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">destinations</span>
                         <i class="angle fe fe-chevron-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Destinations</a></li>
-                        <li><a href="/destinations" class="slide-item {{ Request::path() == 'destinations' ? 'active' : '' }}"> All
+                        <li><a href="/destinations"
+                                class="slide-item {{ Request::path() == 'destinations' ? 'active' : '' }}"> All
                                 Destinations</a>
                         </li>
                         <li><a href="/destinations/create"
-                                class="slide-item {{ Request::path() == 'destinations/create' ? 'active' : '' }}"> New Destination</a>
+                                class="slide-item {{ Request::path() == 'destinations/create' ? 'active' : '' }}"> New
+                                Destination</a>
                         </li>
                     </ul>
                 </li>
                 <li
                     class="slide {{ Request::path() == 'packages/create' || Request::path() == 'packages' ? 'is-expanded' : '' }}">
-                    <a class="side-menu__item active" data-bs-toggle="slide" href="javascript:void(0)">
+                    <a class="side-menu__item {{ Request::path() == 'destinations/create' || Request::path() == 'destinations' ? 'active' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0)">
                         <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">Packages</span>
                         <i class="angle fe fe-chevron-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">packages</a></li>
-                        <li><a href="/packages" class="slide-item {{ Request::path() == 'packages' ? 'active' : '' }}"> All
+                        <li><a href="/packages" class="slide-item {{ Request::path() == 'packages' ? 'active' : '' }}">
+                                All
                                 Packages</a>
                         </li>
                         <li><a href="/packages/create"
-                                class="slide-item {{ Request::path() == 'packages/create' ? 'active' : '' }}"> New Package</a>
+                                class="slide-item {{ Request::path() == 'packages/create' ? 'active' : '' }}"> New
+                                Package</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="slide {{ Request::path() == 'bookings' ? 'is-expanded' : '' }}">
+                    <a class="side-menu__item {{ Request::path() == 'bookings' ? 'active' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0)">
+                        <i class="side-menu__icon ri-user-4-line"></i><span class="side-menu__label">Bookings</span>
+                        <i class="angle fe fe-chevron-right"></i></a>
+                    <ul class="slide-menu">
+                        <li class="side-menu-label1"><a href="javascript:void(0)">bookings</a></li>
+                        <li><a href="/bookings" class="slide-item {{ Request::path() == 'bookings' ? 'active' : '' }}">
+                                All
+                                Bookings</a>
                         </li>
                     </ul>
                 </li>

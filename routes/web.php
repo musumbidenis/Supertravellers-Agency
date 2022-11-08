@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PackagesController;
+use App\Http\Controllers\BookingsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DestinationsController;
-use App\Http\Controllers\PaymentsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,9 @@ Route::get('/', [ClientController::class,'index']);
 Route::get('/getPackage/{id}', [ClientController::class,'getPackage']);
 Route::get('/getPackageType/{type}', [ClientController::class,'getPackageType']);
 Route::post('/getDestination', [ClientController::class,'getDestination']);
+Route::post('/booking/{id}', [ClientController::class,'book']);
+Route::post('/booking/update/{id}', [ClientController::class,'bookingUpdate']);
+Route::get('/myBookings', [ClientController::class,'myBookings']);
 
 Route::get('/about', function () {
     return view('client.about');
@@ -46,8 +51,11 @@ Route::post('/register', [AuthController::class,'register']);
 Route::post('/login', [AuthController::class,'login']);
 Route::get('/logout', [AuthController::class,'logout']);
 
+Route::get('/dashboard', [DashboardController::class,'index']);
+
 
 /** Admin Section Routes */
 Route::resource('users', UsersController::class);
 Route::resource('packages', PackagesController::class);
 Route::resource('destinations', DestinationsController::class);
+Route::resource('bookings', BookingsController::class);

@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
-class PaymentsController extends Controller
+use App\Models\User;
+use App\Models\Destination;
+use App\Models\Package;
+use App\Models\Booking;
+use Illuminate\Http\Request;
+
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data = $request->all();
+        $users = User::count();
+        $destinations = Destination::count();
+        $packages = Package::count();
+        $bookings = Booking::count();
 
-        return redirect('/pesapal/iframe',['data', $data]);
+
+        return view('admin.dashboard', ['users'=>$users, 'destinations'=>$destinations, 'packages'=>$packages, 'bookings'=>$bookings]);
     }
 
     /**

@@ -28,7 +28,7 @@
                 @guest
                     <li><a href="/login">Sign In</a></li>
                 @else
-                    <li class="{{ Request::path() == 'bookings' ? 'active' : '' }}"><a href="/bookings">My Bookings</a></li>
+                    <li class="{{ Request::path() == 'bookings' ? 'active' : '' }}"><a href="/myBookings">My Bookings</a></li>
                     <li><a href="/logout">Logout</a></li>
                 @endguest
             </ul>

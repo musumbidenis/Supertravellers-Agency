@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use DB;
+Use Auth;
+use App\Models\User;
+use App\Models\Booking;
 use App\Models\Package;
 use Illuminate\Http\Request;
 
@@ -40,5 +43,44 @@ class ClientController extends Controller
             ->where('destinations.destination_id', '=', $destination_id)
             ->get();
         return view('client.destination',['packages'=>$packages]);
+    }
+    public function book($id)
+    {
+        $user_id = Auth::user()->user_id;
+        $package_id = $id;
+
+        //Save the data to database
+        $booking = new Booking();
+        $booking->user_id = $user_id;
+        $booking->package_id = $package_id;
+        $booking->status = 'active';
+
+        $booking->save();
+        
+        return response()->json('success');
+    }
+
+    public function bookingUpdate($id)
+    {
+        //Update booking status in db
+        DB::update('UPDATE bookings SET status = ? where booking_id = ?', ['cancelled', $id]);
+        
+        return response()->json('success');
+    }
+
+    public function myBookings()
+    {
+        $user_id = Auth::user()->user_id;
+        
+        $myBookings = User::query()
+            ->join('bookings', 'bookings.user_id', '=', 'users.user_id')
+            ->join('packages', 'packages.package_id', '=', 'bookings.package_id')
+            ->join('destinations', 'destinations.destination_id', '=', 'packages.destination_id')
+            ->select('users.*', 'bookings.*', 'packages.*', 'destinations.*')
+            ->where('users.user_id', '=', $user_id)
+            ->where('bookings.status', '=', 'active')
+            ->get();
+            
+        return view('client.myBookings', ['myBookings'=>$myBookings]);
     }
 }

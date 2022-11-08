@@ -60,7 +60,7 @@ class AuthController extends Controller
             $role = Auth::user()->role;
 
             switch ($role) {
-                case 'admin':
+                case 'administrator':
                     return redirect('/dashboard')->with('toast_success', 'Signed in');
                     break;
                 case 'receptionist':

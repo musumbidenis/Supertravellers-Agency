@@ -3,20 +3,20 @@
 namespace App\Http\Livewire;
 
 use Auth;
-use App\Models\User;
+use App\Models\Booking;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class Users extends PowerGridComponent
+final class Bookings extends PowerGridComponent
 {
     use ActionButton;
 
-    public string $primaryKey = 'users.user_id';
+    public string $primaryKey = 'bookings.booking_id';
 
-    public string $sortField = 'users.user_id';
+    public string $sortField = 'bookings.booking_id';
 
     protected function getListeners()
     {
@@ -53,10 +53,10 @@ final class Users extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox('user_id');
+        $this->showCheckBox('booking_id');
 
         return [
-            Exportable::make('users_report')
+            Exportable::make('bookings_report')
                 ->striped('A6ACCD')
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()
@@ -79,11 +79,15 @@ final class Users extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\User>
+     * @return Builder<\App\Models\Booking>
      */
     public function datasource(): Builder
     {
-        return User::query();
+        return Booking::query()
+            ->join('users', 'users.user_id', '=', 'bookings.user_id')
+            ->join('packages', 'packages.package_id', '=', 'bookings.package_id')
+            ->join('destinations', 'destinations.destination_id', '=', 'packages.destination_id')
+            ->select('users.*', 'bookings.*', 'packages.*', 'destinations.*');
     }
 
     /*
@@ -118,18 +122,13 @@ final class Users extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('user_id')
-            ->addColumn('first_name')
-            ->addColumn('surname')
             ->addColumn('email')
+            ->addColumn('phone')
+            ->addColumn('package_name')
+            ->addColumn('destination_name')
+            ->addColumn('status')
 
-            /** Example of custom column using a closure **/
-            ->addColumn('email_lower', function (User $model) {
-                return strtolower(e($model->email));
-            })
-
-            ->addColumn('role')
-            ->addColumn('updated_at_formatted', fn(User $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn(Booking $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -149,26 +148,30 @@ final class Users extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('USER ID', 'user_id')->makeInputRange(),
-
-            Column::make('FIRST NAME', 'first_name')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('SURNAME', 'surname')
-                ->sortable()
-                ->searchable(),
-
             Column::make('EMAIL', 'email')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('PHONE', 'phone')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('PACKAGE', 'package_name')
                 ->sortable()
                 ->searchable()
                 ->makeInputText(),
 
-            Column::make('ROLE', 'role')
+            Column::make('DESTINATION', 'destination_name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->makeInputText(),
 
-            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+            Column::make('STATUS', 'status')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->searchable()
                 ->sortable()
                 ->makeInputDatePicker(),
@@ -194,7 +197,7 @@ final class Users extends PowerGridComponent
         return [
             Button::make('destroy', 'Delete')
                 ->class('btn btn-sm btn-danger')
-                ->emit('rowActionEvent', ['id' => 'user_id']),
+                ->emit('rowActionEvent', ['id' => 'booking_id']),
         ];
     }
 

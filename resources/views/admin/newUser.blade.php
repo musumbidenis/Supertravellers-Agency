@@ -66,7 +66,7 @@
                                 <label>Role</label>
                                 <select class="form-control select2" name="role" required>
                                     <option disabled selected value="">Select Role</option>
-                                    <option value="admin">Administrator</option>
+                                    <option value="administrator">Administrator</option>
                                     <option value="receptionist">Receptionist</option>
                                 </select>
                                 <div class="invalid-feedback">Please select a valid role.</div>

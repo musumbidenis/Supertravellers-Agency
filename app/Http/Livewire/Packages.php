@@ -220,7 +220,7 @@ final class Packages extends PowerGridComponent
         return [
             //Disable button delete for customer,receptionist
             Rule::button('destroy')
-                ->when(fn($role) => Auth::user()->role === 'customere' || Auth::user()->role === 'receptionist')
+                ->when(fn($role) => Auth::user()->role === 'customer' || Auth::user()->role === 'receptionist')
                 ->disable(),
         ];
     }

@@ -43,7 +43,7 @@
                                             </a>
                                         </div>
                                         <!-- FULL-SCREEN -->
-                                        <div class="dropdown  d-flex notifications">
+                                        {{-- <div class="dropdown  d-flex notifications">
                                             <a class="nav-link icon" data-bs-toggle="dropdown"><i
                                                     class="fe fe-bell"></i><span class=" pulse"></span>
                                             </a>
@@ -104,23 +104,23 @@
                                                     class="dropdown-item text-center p-3 text-muted">View all
                                                     Notification</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <!-- NOTIFICATIONS -->
                                         <div class="dropdown d-flex profile-1">
                                             <a href="javascript:void(0)" data-bs-toggle="dropdown"
                                                 class="nav-link leading-none d-flex">
-                                                <img src="../assets/images/users/21.jpg" alt="profile-user"
+                                                <img src="../admin/images/users/avatar.png" alt="profile-user"
                                                     class="avatar  profile-user brround cover-image">
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <div class="drop-heading">
                                                     <div class="text-center">
-                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">Musumbi Denis</h5>
-                                                        <small class="text-muted">System Admin</small>
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">{{Auth::user()->surname}} {{Auth::user()->first_name}}</h5>
+                                                        <small class="text-muted">{{Auth::user()->role}}</small>
                                                     </div>
                                                 </div>
                                                 <div class="dropdown-divider m-0"></div>
-                                                <a class="dropdown-item" href="login.html">
+                                                <a class="dropdown-item" href="/logout">
                                                     <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
                                                 </a>
                                             </div>
