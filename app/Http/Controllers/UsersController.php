@@ -59,7 +59,7 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users',
             'phone' => 'required',
             'password' => 'required',
-            'role' => 'required|in:administrator,receptionist',
+            'role' => 'required|in:administrator,staff',
         ]);
 
         //Alert the user of the input error

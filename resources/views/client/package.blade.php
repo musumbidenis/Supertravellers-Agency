@@ -35,7 +35,7 @@
     </div>
 @endsection
 @section('js')
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         $('#book').click(function(event) {
             event.preventDefault();
@@ -43,16 +43,18 @@
             var package_name = "<?php echo "{$package[0]->package_name}"; ?>";
             var amount = "<?php echo "{$package[0]->amount}"; ?>";
 
-            swal({
+            Swal.fire({
                     title: "Are you sure?",
                     text: "You're about to book for " + package_name + " Worth Kshs. " + amount +
                         ".Click the Ok button to book!",
                     icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, book now!'
                 })
-                .then((willDelete) => {
-                    if (willDelete) {
+                .then((result) => {
+                    if (result.isConfirmed) {
 
 
                         //CORS
@@ -71,18 +73,25 @@
                             },
                             success: function(response) {
                                 if (response == 'success') {
-                                    swal({
-                                        title: "Success",
-                                        text: "Booking was successfull!",
-                                        icon: "success",
+                                    Swal.fire({
+                                        title: '<strong>Booking Notification</strong>',
+                                        icon: 'info',
+                                        html: '<p style="text-align: left;"><strong>Thank you for trusting us!</strong></p> ' +
+                                            '<p  style="text-align: left;">We are committed to serve you better.</p> ' +
+                                            '<p style="text-align: left;">Our staff at Supertravellers will reach out to you (via your contacts provided during registration) for payment and travel arrangements.</p>' +
+                                            '<p  style="text-align: left;">Thank you!</p> ' +
+                                            '<p>&nbsp;</p> ',
+                                        footer: '<p style="text-align: center;"><em><span style="text-decoration: underline;">"Travel well,Experience the World with us"</span></em></p> ',
+                                        showCloseButton: true,
+                                        showConfirmButton: false,
                                     }).then((confirmed) => {
                                         window.location.replace('/myBookings');
                                     });
                                 } else {
-                                    swal({
-                                        title: "Error",
+                                    Swal.fire({
+                                        title: "Oops..",
                                         text: "You must be logged in for you to book! Please sign in to complete your booking!",
-                                        icon: "warning",
+                                        icon: "error",
                                     }).then((confirmed) => {
                                         window.location.replace('/login');
                                     });
@@ -92,7 +101,11 @@
                             }
                         });
                     } else {
-                        swal("Booking process cancelled!");
+                        Swal.fire({
+                            text: 'Booking process cancelled!',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
                     }
                 });
         });

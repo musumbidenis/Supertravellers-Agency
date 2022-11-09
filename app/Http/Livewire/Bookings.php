@@ -20,7 +20,7 @@ final class Bookings extends PowerGridComponent
 
     protected function getListeners()
     {
-        return array_merge(parent::getListeners(), ['rowActionEvent', 'bulkActionEvent']);
+        return array_merge(parent::getListeners(), ['updateActionEvent','rowActionEvent', 'bulkActionEvent']);
     }
 
     /*
@@ -28,6 +28,13 @@ final class Bookings extends PowerGridComponent
     | Events
     |--------------------------------------------------------------------------
     */
+    public function updateActionEvent(array $data): void
+    {
+        $message = $data['id'];
+
+        $this->dispatchBrowserEvent('updateAlert', ['message' => $message]);
+    }
+
     public function rowActionEvent(array $data): void
     {
         $message = $data['id'];
@@ -195,6 +202,10 @@ final class Bookings extends PowerGridComponent
     public function actions(): array
     {
         return [
+            Button::make('update', 'Status update')
+                ->class('btn btn-sm btn-primary')
+                ->emit('updateActionEvent', ['id' => 'booking_id']),
+
             Button::make('destroy', 'Delete')
                 ->class('btn btn-sm btn-danger')
                 ->emit('rowActionEvent', ['id' => 'booking_id']),
@@ -218,7 +229,12 @@ final class Bookings extends PowerGridComponent
     public function actionRules(): array
     {
         return [
-            //Disable button delete for customer,receptionist
+            //Hide button status update where status !pending
+            Rule::button('update')
+                ->when(fn($book) => $book->status == 'active' || $book->status == 'cancelled')
+                ->hide(),
+
+            //Disable button delete for users !admin
             Rule::button('destroy')
                 ->when(fn($role) => Auth::user()->role === 'customer' || Auth::user()->role === 'receptionist')
                 ->disable(),

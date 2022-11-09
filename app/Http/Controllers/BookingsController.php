@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 
@@ -67,9 +68,12 @@ class BookingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        //Update booking status in db
+        DB::update('UPDATE bookings SET status = ? where booking_id = ?', ['active', $id]);
+
+        return response()->json('success');
     }
 
     /**

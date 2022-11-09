@@ -63,7 +63,7 @@ class AuthController extends Controller
                 case 'administrator':
                     return redirect('/dashboard')->with('toast_success', 'Signed in');
                     break;
-                case 'receptionist':
+                case 'staff':
                     return redirect('/dashboard')->with('toast_success', 'Signed in');
                     break;
                 case 'customer':

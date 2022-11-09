@@ -21,7 +21,7 @@ class isAdmin
         if ($user->role == 'administrator') {
             return $next($request);
         } else {
-            return back()->withErrors('Youre not authorized to access this resource!'.$user->role);
+            return back()->withErrors('Youre not authorized to access this resource!');
         }
     }
 }

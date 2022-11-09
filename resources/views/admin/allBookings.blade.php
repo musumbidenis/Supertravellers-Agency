@@ -30,6 +30,51 @@
 @section('js')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+        window.addEventListener('updateAlert', event => {
+
+            swal({
+                    title: "Are you sure?",
+                    text: "You're about to update to update the booking status!This step is irreversible!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var data = event.detail.message;
+
+                        //CORS
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        //Ajax request for deleting
+                        $.ajax({
+                            url: 'bookings/' + data,
+                            type: 'patch',
+                            data: {
+                                id: data,
+                            },
+                            success: function(response) {
+                                swal({
+                                    title: "Success",
+                                    text: "Booking status updated successfully!",
+                                    icon: "success",
+                                }).then((confirmed) => {
+                                    window.location.reload();
+                                });
+
+                            }
+                        });
+                    } else {
+                        swal("Process cancelled!");
+                    }
+                });
+        })
+    </script>
+    <script>
         window.addEventListener('showAlert', event => {
 
             swal({

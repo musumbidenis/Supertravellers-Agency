@@ -55,7 +55,7 @@ class ClientController extends Controller
         $booking = new Booking();
         $booking->user_id = Auth::user()->user_id;
         $booking->package_id = $id;
-        $booking->status = 'active';
+        $booking->status = 'pending';
 
         $booking->save();
             return response()->json('success');
@@ -80,6 +80,7 @@ class ClientController extends Controller
             ->select('users.*', 'bookings.*', 'packages.*', 'destinations.*')
             ->where('users.user_id', '=', $user_id)
             ->where('bookings.status', '=', 'active')
+            ->orWhere('bookings.status', '=', 'pending')
             ->get();
 
         return view('client.myBookings', ['myBookings' => $myBookings]);

@@ -27,22 +27,47 @@
             </div>
         @else
             <div class="container">
-                @foreach ($myBookings as $booking)
-                    <div class="card mt-3">
-                        <div class="card-header">
-                            <input id="booking_id" type="text" value="{{ $booking->booking_id }}" hidden>
-                            <input id="package_name" type="text" value="{{ $booking->package_name }}" hidden>
-                            {{ $booking->package_type }} - {{ $booking->destination_name }}
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $booking->package_name }} - Kshs. {{ $booking->amount }}</h5>
-                            <p class="card-text">{{ $booking->Amount }}</p>
-                            <a class="cancel btn btn-danger">Cancel</a>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Package</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $i = 0; @endphp
+                                @foreach ($myBookings as $booking)
+                                    <input id="booking_id" type="text" value="{{ $booking->booking_id }}" hidden>
+                                    <input id="package_name" type="text" value="{{ $booking->package_name }}" hidden>
+                                    <tr>
+                                        <td hidden>{{ $booking->booking_id }}</td>
+                                        <th scope="row">{{ $i }}</th>
+                                        <td>{{ $booking->package_name }}</td>
+                                        <td>{{ $booking->destination_name }}</td>
+                                        <td>{{ $booking->amount }}</td>
+                                        <td>{{ $booking->status }}</td>
+                                        <td>
+                                            @if ($booking->status == 'pending')
+                                                <a class="cancel btn btn-danger btn-sm">Cancel</a>
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    @php $i ++;  @endphp
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                @endforeach
+                </div>
             </div>
-        @endif
+    </div>
+    @endif
     </div>
 @endsection
 @section('js')
@@ -50,12 +75,15 @@
     <script>
         $('.cancel').click(function(event) {
             event.preventDefault();
-            var booking_id = document.getElementById("booking_id").value;
-            var package_name = document.getElementById("package_name").value;
+
+            $tr = $(this).closest('tr');
+            var data = $tr.children("td").map(function() {
+                return $(this).text();
+            }).get();
 
             swal({
                     title: "Are you sure?",
-                    text: "You're about to cancel your " + package_name +
+                    text: "You're about to cancel your " + data[1] +
                         " booking!",
                     icon: "warning",
                     buttons: true,
@@ -74,10 +102,10 @@
 
                         //Ajax request for booking
                         $.ajax({
-                            url: '/booking/update/' + booking_id,
+                            url: '/booking/update/' + data[0],
                             type: 'post',
                             data: {
-                                id: booking_id,
+                                id: data[0],
                             },
                             success: function(response) {
                                 swal({
