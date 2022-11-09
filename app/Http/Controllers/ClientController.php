@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
-Use Auth;
+use Auth;
 use App\Models\User;
 use App\Models\Booking;
 use App\Models\Package;
@@ -18,12 +18,12 @@ class ClientController extends Controller
             ->select('packages.*', 'destinations.*')
             ->get();
         $destinations = DB::select('select * from destinations');
-        return view('client.index', ['destinations' => $destinations,'packages' => $packages]);
+        return view('client.index', ['destinations' => $destinations, 'packages' => $packages]);
     }
     public function getPackage($id)
     {
         $package = DB::select('select * from packages where package_id = ?', [$id]);
-        return view('client.package',['package'=>$package]);
+        return view('client.package', ['package' => $package]);
     }
     public function getPackageType($type)
     {
@@ -32,7 +32,7 @@ class ClientController extends Controller
             ->select('packages.*', 'destinations.*')
             ->where('packages.package_type', '=', $type)
             ->get();
-        return view('client.packages',['packages'=>$packages]);
+        return view('client.packages', ['packages' => $packages]);
     }
     public function getDestination(Request $request)
     {
@@ -42,36 +42,37 @@ class ClientController extends Controller
             ->select('packages.*', 'destinations.*')
             ->where('destinations.destination_id', '=', $destination_id)
             ->get();
-        return view('client.destination',['packages'=>$packages]);
+        return view('client.destination', ['packages' => $packages]);
     }
     public function book($id)
     {
-        $user_id = Auth::user()->user_id;
-        $package_id = $id;
+
+        if (is_null(Auth::user())) {
+            return response()->json('error');
+        }
 
         //Save the data to database
         $booking = new Booking();
-        $booking->user_id = $user_id;
-        $booking->package_id = $package_id;
+        $booking->user_id = Auth::user()->user_id;
+        $booking->package_id = $id;
         $booking->status = 'active';
 
         $booking->save();
-        
-        return response()->json('success');
+            return response()->json('success');
     }
 
     public function bookingUpdate($id)
     {
         //Update booking status in db
         DB::update('UPDATE bookings SET status = ? where booking_id = ?', ['cancelled', $id]);
-        
+
         return response()->json('success');
     }
 
     public function myBookings()
     {
         $user_id = Auth::user()->user_id;
-        
+
         $myBookings = User::query()
             ->join('bookings', 'bookings.user_id', '=', 'users.user_id')
             ->join('packages', 'packages.package_id', '=', 'bookings.package_id')
@@ -80,7 +81,7 @@ class ClientController extends Controller
             ->where('users.user_id', '=', $user_id)
             ->where('bookings.status', '=', 'active')
             ->get();
-            
-        return view('client.myBookings', ['myBookings'=>$myBookings]);
+
+        return view('client.myBookings', ['myBookings' => $myBookings]);
     }
 }

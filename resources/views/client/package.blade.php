@@ -20,7 +20,8 @@
                 <div class="col-lg-12">
                     <img style="height: 270px;width:500px;" src="../images/{{ $package[0]->image_url }}" alt="Image"
                         class="img-fluid rounded-20 mx-auto d-block">
-                    <h2 package_name="{{ $package[0]->package_name }}" class="section-title text-left my-4">{{ $package[0]->package_name }}</h2>
+                    <h2 package_name="{{ $package[0]->package_name }}" class="section-title text-left my-4">
+                        {{ $package[0]->package_name }}</h2>
                     <p>{!! $package[0]->description !!}</p>
 
 
@@ -38,20 +39,21 @@
     <script>
         $('#book').click(function(event) {
             event.preventDefault();
-            var package_id = "<?php echo"{$package[0]->package_id}"?>"; 
-            var package_name = "<?php echo"{$package[0]->package_name}"?>";
-            var amount = "<?php echo"{$package[0]->amount}"?>"; 
+            var package_id = "<?php echo "{$package[0]->package_id}"; ?>";
+            var package_name = "<?php echo "{$package[0]->package_name}"; ?>";
+            var amount = "<?php echo "{$package[0]->amount}"; ?>";
 
             swal({
                     title: "Are you sure?",
-                    text: "You're about to book for " + package_name +" Worth Kshs. " + amount + ".Click the Ok button to book!",
+                    text: "You're about to book for " + package_name + " Worth Kshs. " + amount +
+                        ".Click the Ok button to book!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        
+
 
                         //CORS
                         $.ajaxSetup({
@@ -68,13 +70,24 @@
                                 id: package_id,
                             },
                             success: function(response) {
-                                swal({
-                                    title: "Success",
-                                    text: "Booking was successfull!",
-                                    icon: "success",
-                                }).then((confirmed) => {
-                                    window.location.replace('/myBookings');
-                                });
+                                if (response == 'success') {
+                                    swal({
+                                        title: "Success",
+                                        text: "Booking was successfull!",
+                                        icon: "success",
+                                    }).then((confirmed) => {
+                                        window.location.replace('/myBookings');
+                                    });
+                                } else {
+                                    swal({
+                                        title: "Error",
+                                        text: "You must be logged in for you to book! Please sign in to complete your booking!",
+                                        icon: "warning",
+                                    }).then((confirmed) => {
+                                        window.location.replace('/login');
+                                    });
+                                }
+
 
                             }
                         });
