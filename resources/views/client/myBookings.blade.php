@@ -41,7 +41,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $i = 0; @endphp
+                                @php $i = 1; @endphp
                                 @foreach ($myBookings as $booking)
                                     <input id="booking_id" type="text" value="{{ $booking->booking_id }}" hidden>
                                     <input id="package_name" type="text" value="{{ $booking->package_name }}" hidden>
