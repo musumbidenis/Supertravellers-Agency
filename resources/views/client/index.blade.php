@@ -123,34 +123,41 @@
                     <div class="owl-single owl-carousel no-nav">
                         <div class="testimonial mx-auto">
                             <figure class="img-wrap">
-                                <img src="images/person_2.jpg" alt="Image" class="img-fluid">
+                                <img src="../client/images/person_2.jpg" alt="Image" class="img-fluid">
                             </figure>
                             <h3 class="name">Adam Aderson</h3>
                             <blockquote>
-                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
-                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                                <p>&ldquo;You expect first-class treatment from Supertravellers and that’s exactly what you
+                                    get. What
+                                    makes Supertravellers even more special is the attention to detail in the added touches,
+                                    the
+                                    welcoming dinners, the little gifts from Felix and Jane along the way, and the extra
+                                    care taken with our children.&rdquo;</p>
                             </blockquote>
                         </div>
 
                         <div class="testimonial mx-auto">
                             <figure class="img-wrap">
-                                <img src="images/person_3.jpg" alt="Image" class="img-fluid">
+                                <img src="../client/images/person_3.jpg" alt="Image" class="img-fluid">
                             </figure>
                             <h3 class="name">Lukas Devlin</h3>
                             <blockquote>
-                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
-                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                                <p>&ldquo;What an incredible experience! Thanks to Supertravellers, my family and I enjoyed
+                                    a trip we
+                                    will never forget. We could not have asked for a friendlier, more knowledgeable team. It
+                                    was truly the adventure of a lifetime.&rdquo;</p>
                             </blockquote>
                         </div>
 
                         <div class="testimonial mx-auto">
                             <figure class="img-wrap">
-                                <img src="images/person_4.jpg" alt="Image" class="img-fluid">
+                                <img src="../client/images/person_4.jpg" alt="Image" class="img-fluid">
                             </figure>
                             <h3 class="name">Kayla Bryant</h3>
                             <blockquote>
-                                <p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the
-                                    coast of the Semantics, a large language ocean.&rdquo;</p>
+                                <p>&ldquo;Supertravellers has set a new standard of travel for us that others cannot quite match. I
+                                    would add that no other place is as engaging for me now that I have been to Kenya with
+                                    your company.&rdquo;</p>
                             </blockquote>
                         </div>
 
@@ -173,7 +180,8 @@
                 @foreach ($packages as $package)
                     <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <div class="media-1">
-                            <img style="height: 270px;width:500px;" src="../images/{{ $package->image_url }}" alt="Image" class="img-fluid">
+                            <img style="height: 270px;width:500px;" src="../images/{{ $package->image_url }}"
+                                alt="Image" class="img-fluid">
                             <span class="d-flex align-items-center loc my-2">
                                 <span class="icon-room mr-3"></span>
                                 <span>{{ $package->destination_name }}</span>

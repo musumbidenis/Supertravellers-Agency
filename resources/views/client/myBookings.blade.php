@@ -51,7 +51,7 @@
                                         <td>{{ $booking->package_name }}</td>
                                         <td>{{ $booking->destination_name }}</td>
                                         <td>{{ $booking->amount }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td style="text-transform: capitalize">{{ $booking->status }}</td>
                                         <td>
                                             @if ($booking->status == 'pending')
                                                 <a class="cancel btn btn-danger btn-sm">Cancel</a>
