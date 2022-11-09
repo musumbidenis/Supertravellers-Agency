@@ -9,7 +9,6 @@ use App\Http\Controllers\BookingsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DestinationsController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,13 +21,13 @@ use App\Http\Controllers\DestinationsController;
  */
 
 /** Client Section Routes */
-Route::get('/', [ClientController::class,'index']);
-Route::get('/getPackage/{id}', [ClientController::class,'getPackage']);
-Route::get('/getPackageType/{type}', [ClientController::class,'getPackageType']);
-Route::post('/getDestination', [ClientController::class,'getDestination']);
-Route::post('/booking/{id}', [ClientController::class,'book']);
-Route::post('/booking/update/{id}', [ClientController::class,'bookingUpdate']);
-Route::get('/myBookings', [ClientController::class,'myBookings']);
+Route::get('/', [ClientController::class, 'index']);
+Route::get('/getPackage/{id}', [ClientController::class, 'getPackage']);
+Route::get('/getPackageType/{type}', [ClientController::class, 'getPackageType']);
+Route::post('/getDestination', [ClientController::class, 'getDestination']);
+Route::post('/booking/{id}', [ClientController::class, 'book']);
+Route::post('/booking/update/{id}', [ClientController::class, 'bookingUpdate']);
+Route::get('/myBookings', [ClientController::class, 'myBookings']);
 
 Route::get('/about', function () {
     return view('client.about');
@@ -38,8 +37,6 @@ Route::get('/contact', function () {
     return view('client.contact');
 });
 
-
-
 /** Authentication Routes */
 Route::get('/register', function () {
     return view('auth.register');
@@ -47,15 +44,17 @@ Route::get('/register', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
-Route::post('/register', [AuthController::class,'register']);
-Route::post('/login', [AuthController::class,'login']);
-Route::get('/logout', [AuthController::class,'logout']);
-
-Route::get('/dashboard', [DashboardController::class,'index']);
-
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 /** Admin Section Routes */
-Route::resource('users', UsersController::class);
-Route::resource('packages', PackagesController::class);
-Route::resource('destinations', DestinationsController::class);
-Route::resource('bookings', BookingsController::class);
+Route::middleware(['isLoggedIn', 'isAdmin'])->group(function () {
+    Route::resource('users', UsersController::class);
+    Route::resource('packages', PackagesController::class);
+    Route::resource('destinations', DestinationsController::class);
+});
+Route::middleware(['isLoggedIn', 'isStaff'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::resource('bookings', BookingsController::class);
+});
